@@ -91,22 +91,23 @@ function getEntity($entity, $id){
                 $sortsql.=" ORDER BY latestIncoming DESC";
                 break;
             case "conversations":
-                $sortsql.=" ORDER BY dateTime DESC";
+                $sortsql.=" ORDER BY dateTime ASC";
                 break;
         }
 
         // If ID is provided, add to SQL and bind
         if(!empty($id)){
-            $sql.=" WHERE ".$tableToKey[$tableName]." = ?";        
+            $sql.=" WHERE ".$tableToKey[$tableName]." = ? ".$sortsql;        
             $stmt = $conn->prepare($sql);    
             $stmt->bind_param("s",$id);
         }else{            
+            $sql.=$sortsql;
             $stmt = $conn->prepare($sql);    
         }
 
         $stmt->execute();
         $ret = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-
+        
         return array(
             "success"=> true,
             "data"=>$ret,
@@ -116,7 +117,6 @@ function getEntity($entity, $id){
             "success"=>false,
             "data"=>"Error: ".str($ex),
         );
-        
     }
 }
 
@@ -168,6 +168,38 @@ function addToDict($keyword, $message){
     }
 }
 
+function addToConv($subscriberNumber, $message){   
+    // Build SQL statement
+    $sql = "INSERT INTO conversations "
+            . "(subscriberNumber,destinationAddress, message, senderAddress, isMO) "
+            . "VALUES (?,?,?,'tel:21580567',0)";
+    
+    $sql_update = "UPDATE opt_in SET latestIncoming=now() WHERE subscriberNumber=?";
+
+    try{
+        // Initialize DB
+        $conn = initializeDb();    
+        $stmt = $conn->prepare($sql);    
+        $stmt->bind_param("sss",$subscriberNumber,$subscriberNumber,$message);
+        $stmt->execute();        
+        
+        $stmt2 = $conn->prepare(($sql_update));
+        $stmt2->bind_param("s",$subscriberNumber);
+        $stmt2->execute();
+        
+        return array(
+            "success"=> true,
+            "data"=>"Create successful",
+        );
+    } catch (Exception $ex) {
+        return array(
+            "success"=>false,
+            "data"=>"Error on update: ".str($ex),
+        );
+        
+    }
+}
+
 /* 
  * RETRIEVE RECORDS
  * 
@@ -189,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if($entity=="subscriber"){        
         foreach($arr['data'] as $x=>$sub){
             $latestMsg = getEntity("conv", $sub['subscriberNumber'])['data'];
-            $latestMsg = reset($latestMsg)['message'];
+            $latestMsg = array_pop($latestMsg)['message'];
             $arr['data'][$x]['latestMsg'] = $latestMsg;
         }
         
@@ -217,7 +249,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "data"=>"No entity provided",
         ));
     }
-    else if(!in_array($entity, array("dict","conversations"))){
+    else if(!in_array($entity, array("dict","conv"))){
         returnJson(array(
             "success"=>false,
             "data"=>"Not allowed for entity: ".$entity
@@ -227,10 +259,11 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // If record exists, then it's an update request
     // Update requests are only allowed for dictionary entries
-    if(count($result)>0){
+    if(count($result)>0 && $entity!="conv"){
         
         // Check if update is for dictionary
         if(!in_array($entity, array("dict"))){
+            die("andito");
             returnJson(array(
                 "success"=>false,
                 "data"=>"Not allowed for entity: ".$entity,
@@ -270,6 +303,14 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 returnJson(addToDict($id, $_POST['message']));
                 break;
             case "conv":
+                try{
+                returnJson(addToConv($id, $_POST['message']));
+                } catch (Exception $ex) {
+                    return array(
+                        "success"=>false,
+                        "data"=>"Error: ".str($ex),
+                    );
+                }
                 break;
         }
     }

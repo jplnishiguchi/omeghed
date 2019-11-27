@@ -59,6 +59,7 @@
         }
         
         function loadConv(subscriberNumber){
+            $("#currsub").val(subscriberNumber);
             geturl = "/utilities.php?entity=conv&id="+subscriberNumber;
             $.ajax({
                 type: "GET",
@@ -97,6 +98,25 @@
             });
         }
         
+        function sendMsg(subscriber,message){
+            $.ajax({
+                type: "POST",
+                url: "/utilities.php",
+                data:{
+                    entity:"conv",
+                    id:subscriber,
+                    message:message
+                },
+                success: function(msg){
+                    loadSubsList();                    
+                },  
+                error: function(){
+                    alert("failure");
+                }
+            });
+        
+        }
+        
         $(document).ready(loadSubsList());
     </script>
 
@@ -107,7 +127,7 @@
     
   <!-- Page Wrapper -->
   <div id="wrapper">
-
+    <input type="hidden" value="" id="currsub" />
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -256,9 +276,9 @@
 						</div>
 						<div class="chat-box bg-white">
 							<div class="input-group">
-								<input class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+								<input id="chatinput" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
 								<span class="input-group-btn">
-									<button class="btn btn-success no-rounded" type="button">Send</button>
+									<button id="sendmsg" class="btn btn-success no-rounded" type="button">Send</button>
 								</span>
 							</div><!-- /input-group -->	
 						</div>            
@@ -330,6 +350,13 @@
             $(this).addClass("active");
             subscriberNumber = $(this).attr("name");
             loadConv(subscriberNumber);
+        });
+        
+        $("#sendmsg").click(function(){
+            message = $("#chatinput").val();
+            subscriber = $("#currsub").val();
+            $("#chatinput").val('');
+            sendMsg(subscriber,message);
         });
     </script>
 
