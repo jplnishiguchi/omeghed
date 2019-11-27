@@ -1,7 +1,8 @@
 <?php
 
-$getfile='notify_get.txt';
-$postfile='notify_post.txt';
+require('db_connect.php');
+//$getfile='notify_get.txt';
+//$postfile='notify_post.txt';
 
 $date = new DateTime();
 
@@ -10,9 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	$access_token=$_GET['access_token'];
 	$subscriber_number=$_GET['subscriber_number'];
 
-	file_put_contents($getfile, $date->getTimestamp() . PHP_EOL, FILE_APPEND);
-	file_put_contents($getfile, $access_token . PHP_EOL, FILE_APPEND);
-	file_put_contents($getfile, $subscriber_number . PHP_EOL, FILE_APPEND);
+	//file_put_contents($getfile, $date->getTimestamp() . PHP_EOL, FILE_APPEND);
+	//file_put_contents($getfile, $access_token . PHP_EOL, FILE_APPEND);
+	//file_put_contents($getfile, $subscriber_number . PHP_EOL, FILE_APPEND);
 } 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,9 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$json = file_get_contents('php://input');
 	$data = json_decode($json, true);
 
-	file_put_contents($postfile, $date->getTimestamp() . PHP_EOL, FILE_APPEND);
-	file_put_contents($postfile, "json:" . $json . PHP_EOL, FILE_APPEND);
-	file_put_contents($postfile, "data:" . $data . PHP_EOL, FILE_APPEND);
+	//file_put_contents($postfile, $date->getTimestamp() . PHP_EOL, FILE_APPEND);
+	//file_put_contents($postfile, "json:" . $json . PHP_EOL, FILE_APPEND);
+	//file_put_contents($postfile, "data:" . $data . PHP_EOL, FILE_APPEND);
 
 	$numberOfMessagesInThisBatch = 	$data['inboundSMSMessageList']['numberOfMessagesInThisBatch'];
 	$resourceURL = 			$data['inboundSMSMessageList']['resourceURL'];
@@ -38,8 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$isMO=1;
 
 	$subscriberNumber = $senderAddress;
+	$sql = "INSERT INTO conversations (subscriberNumber, dateTime, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, multipartSeqNum, isMO) VALUES 
+	('$subscriberNumber','$dateTime', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$multipartSeqNum', '$isMO=')"
 
-	file_put_contents($postfile, $dateTime . PHP_EOL, FILE_APPEND);
+	/*file_put_contents($postfile, $dateTime . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $destinationAddress . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $messageId . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $message . PHP_EOL, FILE_APPEND);
@@ -51,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	file_put_contents($postfile, $subscriberNumber . PHP_EOL, FILE_APPEND);
 
 	file_put_contents($postfile, $numberOfMessagesInThisBatch . PHP_EOL, FILE_APPEND);
-	file_put_contents($postfile, $resourceURL . PHP_EOL, FILE_APPEND);
+	file_put_contents($postfile, $resourceURL . PHP_EOL, FILE_APPEND);*/
 }
 
 ?>
