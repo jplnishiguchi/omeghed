@@ -3,6 +3,7 @@
 require('db_connect.php');
 //$getfile='notify_get.txt';
 //$postfile='notify_post.txt';
+$errorlog = 'error_log.txt';
 
 $date = new DateTime();
 
@@ -41,7 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$subscriberNumber = $senderAddress;
 	$sql = "INSERT INTO conversations (subscriberNumber, dateTime, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, multipartSeqNum, isMO) VALUES 
 	('$subscriberNumber','$dateTime', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$multipartSeqNum', '$isMO=')"
-
+	
+	if (!mysqli_query($connection,$sql)){
+		//echo "Error description:".mysqli_error($connection);
+		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
+	}
+		
 	/*file_put_contents($postfile, $dateTime . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $destinationAddress . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $messageId . PHP_EOL, FILE_APPEND);
