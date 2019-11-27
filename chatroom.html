@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Conversastions - Omeghed</title>
+  <title>Conversations - Omeghed</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -69,12 +69,14 @@
                     msg.forEach(function(val,index,arr){
                         posclass = "right";
                         iconSrc = "https://img.icons8.com/wired/2x/headset.png";
+                        pull = "left"
                         if(val.isMO===1) {
                             posclass="left";
                             iconSrc = "http://simpleicon.com/wp-content/uploads/mobile-1-256x256.png";
+                            pull = "right";
                         }
                         chatelem = "<li class=\""+posclass+" clearfix\">"+
-                                    "<span class=\"chat-img pull-left\">"+
+                                    "<span class=\"chat-img pull-"+posclass+"\">"+
                                         "<img src=\""+iconSrc+"\" alt=\"User Avatar\">"+
                                     "</span>"+
                                     "<div class=\"chat-body clearfix\">"+
