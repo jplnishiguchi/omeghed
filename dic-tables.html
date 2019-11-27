@@ -21,6 +21,40 @@
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+  <script language="JavaScript" type="text/javascript" src="/vendor/jquery/jquery.min.js"></script>
+  <script language="JavaScript" type="text/javascript" src="/vendor/datatables/jquery.dataTables.min.js"></script>
+
+  
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#dataTable').DataTable( {
+                "ajaxSource": '/utilities.php?entity=dict',
+                "columns": [
+                    { "data": "keyword" },
+                    { "data": "message" },                   
+                    { 
+                        "data": null,
+                        "render":function ( data, type, row ) {
+                            console.log(data);
+                            console.log(type);
+                            console.log(row);
+                            return '<button class="far fa-edit" aria-hidden="true"></button>';
+                        }
+                    },
+                    { 
+                        "data": null,
+                        "render":function ( data, type, row ) {
+                            console.log(data);
+                            console.log(type);
+                            console.log(row);
+                            return '<button class="far fa-trash-alt" aria-hidden="true"></button>';
+                        }
+                    }
+                ]
+            } );
+        } );
+    </script>
+
 </head>
 
 <body id="page-top">
@@ -148,17 +182,17 @@
             <!-- Card Content - Collapse -->
             <div class="collapse" id="collapseCardExample">
 				<div class="card-body">
-                    <form>
+                    <form id="dictform">
 					  <div class="form-group">
 						<label for="formGroupExampleInput">New Keyword</label>
-						<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter new keyword...">
+						<input type="text" name="id" class="form-control" id="formGroupExampleInput" placeholder="Enter new keyword...">
 					  </div>
 					  <div class="form-group">
 						<label for="formGroupExampleInput2">New Message</label>
-						<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Enter New Message...">
+						<input type="text" name="message" class="form-control" id="formGroupExampleInput2" placeholder="Enter New Message...">
 					  </div>
-					  
-					  <button class="btn btn-primary text-uppercase">Add</button>
+					  <input type="hidden" name="entity" value="dict" />
+					  <button id="newdict" class="btn btn-primary text-uppercase">Add</button>
 					  
 					</form>
                 </div>
@@ -177,363 +211,19 @@
                   <thead>
                     <tr>
                       <th>Keyword</th>
-                      <th>Message</th>
-					  <th>Update</th>
-					  <th>Delete</th>
+                      <th>Message</th>		
+                      <th>Update</th>			
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>Keyword</th>
                       <th>Message</th>
-					  <th>Update</th>
-					  <th>Delete</th>
+                      <th>Update</th>			
+                      <th>Delete</th>
                     </tr>
                   </tfoot>
-                  <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>Accountant</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Ashton Cox</td>
-                      <td>Junior Technical Author</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Cedric Kelly</td>
-                      <td>Senior Javascript Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Airi Satou</td>
-                      <td>Accountant</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Brielle Williamson</td>
-                      <td>Integration Specialist</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Herrod Chandler</td>
-                      <td>Sales Assistant</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Rhona Davidson</td>
-                      <td>Integration Specialist</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Colleen Hurst</td>
-                      <td>Javascript Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Sonya Frost</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jena Gaines</td>
-                      <td>Office Manager</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Quinn Flynn</td>
-                      <td>Support Lead</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Charde Marshall</td>
-                      <td>Regional Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Haley Kennedy</td>
-                      <td>Senior Marketing Designer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Tatyana Fitzpatrick</td>
-                      <td>Regional Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Michael Silva</td>
-                      <td>Marketing Designer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Paul Byrd</td>
-                      <td>Chief Financial Officer (CFO)</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Gloria Little</td>
-                      <td>Systems Administrator</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Bradley Greer</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Dai Rios</td>
-                      <td>Personnel Lead</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jenette Caldwell</td>
-                      <td>Development Lead</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Yuri Berry</td>
-                      <td>Chief Marketing Officer (CMO)</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Caesar Vance</td>
-                      <td>Pre-Sales Support</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Doris Wilder</td>
-                      <td>Sales Assistant</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Angelica Ramos</td>
-                      <td>Chief Executive Officer (CEO)</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Gavin Joyce</td>
-                      <td>Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jennifer Chang</td>
-                      <td>Regional Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Brenden Wagner</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Fiona Green</td>
-                      <td>Chief Operating Officer (COO)</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Shou Itou</td>
-                      <td>Regional Marketing</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Michelle House</td>
-                      <td>Integration Specialist</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Suki Burks</td>
-                      <td>Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Prescott Bartlett</td>
-                      <td>Technical Author</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Gavin Cortez</td>
-                      <td>Team Leader</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Martena Mccray</td>
-                      <td>Post-Sales support</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Unity Butler</td>
-                      <td>Marketing Designer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Howard Hatfield</td>
-                      <td>Office Manager</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Hope Fuentes</td>
-                      <td>Secretary</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Vivian Harrell</td>
-                      <td>Financial Controller</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Timothy Mooney</td>
-                      <td>Office Manager</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jackson Bradshaw</td>
-                      <td>Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Olivia Liang</td>
-                      <td>Support Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Bruno Nash</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Sakura Yamamoto</td>
-                      <td>Support Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Thor Walton</td>
-                      <td>Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Finn Camacho</td>
-                      <td>Support Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Serge Baldwin</td>
-                      <td>Data Coordinator</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Zenaida Frank</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Zorita Serrano</td>
-                      <td>Software Engineer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jennifer Acosta</td>
-                      <td>Junior Javascript Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Cara Stevens</td>
-                      <td>Sales Assistant</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Hermione Butler</td>
-                      <td>Regional Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Lael Greer</td>
-                      <td>Systems Administrator</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Jonas Alexander</td>
-                      <td>Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Shad Decker</td>
-                      <td>Regional Director</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Michael Bruce</td>
-                      <td>Javascript Developer</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                    <tr>
-                      <td>Donna Snider</td>
-                      <td>Customer Support</td>
-					  <td><button class="far fa-edit" aria-hidden="true"></button></td>
-					  <td><button class="far fa-trash-alt" aria-hidden="true"></td>
-                    </tr>
-                  </tbody>
                 </table>
               </div>
             </div>
@@ -601,6 +291,23 @@
 
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
+  
+  <script type="text/javascript">
+      $("button#newdict").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/utilities.php",
+                data: $('form#dictform').serialize(),
+                success: function(msg){
+                    alert("success");
+                },  
+                error: function(){
+                    alert("failure");
+                }
+               });
+         });
+       
+  </script>
 
 </body>
 

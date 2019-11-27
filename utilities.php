@@ -17,6 +17,8 @@ $tableToKey = array(
     "dictionary" => "keyword",
 );
 
+$env = getenv("APPLICATION_ENV");
+
 function returnJson($arr){
     echo json_encode($arr);
     die();
@@ -25,10 +27,25 @@ function returnJson($arr){
 function initializeDb(){
     
     // Palitan niyo na lang muna manual
-    $servername = "localhost";
-    $username = "lean1";
-    $password = "lean1";
-    $dbname = "omeghed";
+    $servername = "";
+    $username = "";
+    $password = "";
+    $dbname = "";
+    global $env;
+    
+    switch($env){
+        case "development":
+            $servername = "localhost";
+            $username = "lean1";
+            $password = "lean1";
+            $dbname = "omeghed";
+            break;
+        default:
+            $servername = "localhost";
+            $username = "root";
+            $password = "Elekid123!@-";
+            $dbname = "is238";
+    }
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -37,7 +54,7 @@ function initializeDb(){
     if ($conn->connect_error) {
         $arr = array(
             "success"=>false,
-            "payload"=>"Connection failed: ".$conn->connect_error,
+            "data"=>"Connection failed: ".$conn->connect_error,
         );
         returnJson($arr);
     }
@@ -58,7 +75,7 @@ function getEntity($entity, $id){
     if(empty($entity) || !isset($entityToTable[$entity])){
         return array(
             "success"=>false,
-            "payload"=>"Invalid entity: ".$entity
+            "data"=>"Invalid entity: ".$entity
         );        
     }
     // Add table name to parameters
@@ -83,12 +100,12 @@ function getEntity($entity, $id){
 
         return array(
             "success"=> true,
-            "payload"=>$ret,
+            "data"=>$ret,
         );
     } catch (Exception $ex) {
         return array(
             "success"=>false,
-            "payload"=>"Error: ".str($ex),
+            "data"=>"Error: ".str($ex),
         );
         
     }
@@ -107,12 +124,12 @@ function updateDict($keyword, $message){
         
         return array(
             "success"=> true,
-            "payload"=>"Update successful",
+            "data"=>"Update successful",
         );
     } catch (Exception $ex) {
         return array(
             "success"=>false,
-            "payload"=>"Error on update: ".str($ex),
+            "data"=>"Error on update: ".str($ex),
         );
         
     }
@@ -131,12 +148,12 @@ function addToDict($keyword, $message){
         
         return array(
             "success"=> true,
-            "payload"=>"Create successful",
+            "data"=>"Create successful",
         );
     } catch (Exception $ex) {
         return array(
             "success"=>false,
-            "payload"=>"Error on update: ".str($ex),
+            "data"=>"Error on update: ".str($ex),
         );
         
     }
@@ -156,7 +173,6 @@ function addToDict($keyword, $message){
  * 
  */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  
     $entity = isset($_GET['entity']) ? $_GET['entity'] : NULL;
     $id = isset($_GET['id']) ? $_GET['id'] : NULL;
     
@@ -179,16 +195,16 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(empty($entity)){
         returnJson(array(
             "success"=>false,
-            "payload"=>"No entity provided",
+            "data"=>"No entity provided",
         ));
     }
     else if(!in_array($entity, array("dict","conversations"))){
         returnJson(array(
             "success"=>false,
-            "payload"=>"Not allowed for entity: ".$entity
+            "data"=>"Not allowed for entity: ".$entity
         ));
     }
-    $result = getEntity($entity, $id)['payload'];
+    $result = getEntity($entity, $id)['data'];
     
     // If record exists, then it's an update request
     // Update requests are only allowed for dictionary entries
@@ -198,14 +214,14 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if(!in_array($entity, array("dict"))){
             returnJson(array(
                 "success"=>false,
-                "payload"=>"Not allowed for entity: ".$entity,
+                "data"=>"Not allowed for entity: ".$entity,
             ));
         }
         // Check if message is provided
         else if(!isset($_POST['message'])){
             returnJson(array(
                 "success"=>false,
-                "payload"=>"No provided message",
+                "data"=>"No provided message",
             ));
         }                
         
@@ -219,7 +235,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if(!in_array($entity, array("dict","conv"))){
             returnJson(array(
                 "success"=>false,
-                "payload"=>"Not allowed for entity: ".$entity,
+                "data"=>"Not allowed for entity: ".$entity,
             ));
         }
         
@@ -228,7 +244,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if(!isset($_POST['message'])){
                     returnJson(array(
                         "success"=>false,
-                        "payload"=>"No provided message",
+                        "data"=>"No provided message",
                     ));
                 }
                 
