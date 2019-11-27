@@ -85,13 +85,22 @@ function getEntity($entity, $id){
     try{
         // Initialize DB
         $conn = initializeDb();    
+        $sortsql = "";
+        switch($tableName){
+            case "opt_in":
+                $sortsql.=" ORDER BY latestIncoming DESC";
+                break;
+            case "conversations":
+                $sortsql.=" ORDER BY dateTime DESC";
+                break;
+        }
 
         // If ID is provided, add to SQL and bind
         if(!empty($id)){
             $sql.=" WHERE ".$tableToKey[$tableName]." = ?";        
             $stmt = $conn->prepare($sql);    
             $stmt->bind_param("s",$id);
-        }else{
+        }else{            
             $stmt = $conn->prepare($sql);    
         }
 
@@ -176,7 +185,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $entity = isset($_GET['entity']) ? $_GET['entity'] : NULL;
     $id = isset($_GET['id']) ? $_GET['id'] : NULL;
     
-    returnJson(getEntity($entity, $id));
+    $arr = getEntity($entity, $id);
+    if($entity=="subscriber"){        
+        foreach($arr['data'] as $x=>$sub){
+            $latestMsg = getEntity("conv", $sub['subscriberNumber'])['data'];
+            $latestMsg = reset($latestMsg)['message'];
+            $arr['data'][$x]['latestMsg'] = $latestMsg;
+        }
+        
+    }
+    
+    returnJson($arr);
 }
 
 /*

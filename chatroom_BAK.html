@@ -22,87 +22,10 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="simple-css.css" rel="stylesheet">
 
-  <script language="JavaScript" type="text/javascript" src="/vendor/jquery/jquery.min.js"></script>
-  <script language="JavaScript" type="text/javascript" src="/vendor/datatables/jquery.dataTables.min.js"></script>
-
-  
-    <script type="text/javascript">
-        function loadSubsList(){
-            $.ajax({
-                type: "GET",
-                url: " /utilities.php?entity=subscriber",
-//                data: $('form#dictform').serialize(),
-                success: function(msg){
-                    $("#subslist").empty();
-                    msg = JSON.parse(msg)['data'];
-                    msg.forEach(function(val,index,arr){                       
-                       activeclass = "";
-                       if(index===0){
-                           activeclass = "active";
-                           loadConv(val.subscriberNumber);
-                       }
-                       subselem = "<li class=\"subselem "+activeclass+"\" name=\""+val.subscriberNumber+"\">"+
-                                    "<a href=\"#\" class=\"clearfix\" >"+								
-                                        "<div class=\"friend-name\">" +	
-                                            "<strong>" + val.subscriberNumber + "</strong>" +
-                                        "</div>" +
-                                    "<div class=\"last-message text-muted\">"+ val.latestMsg + "</div>" +
-                                    "</a>" +
-                                "</li>";                                              
-                        $("#subslist").append(subselem);
-                    });                    
-                },  
-                error: function(){
-                    alert("failure");
-                }
-            });
-        }
-        
-        function loadConv(subscriberNumber){
-            geturl = "/utilities.php?entity=conv&id="+subscriberNumber;
-            $.ajax({
-                type: "GET",
-                url: geturl,
-                success: function(msg){
-                    $("#chatarea").empty();
-                    msg = JSON.parse(msg)['data'];
-                    msg.forEach(function(val,index,arr){
-                        posclass = "right";
-                        iconSrc = "https://img.icons8.com/wired/2x/headset.png";
-                        if(val.isMO===1) {
-                            posclass="left";
-                            iconSrc = "http://simpleicon.com/wp-content/uploads/mobile-1-256x256.png";
-                        }
-                        chatelem = "<li class=\""+posclass+" clearfix\">"+
-                                    "<span class=\"chat-img pull-left\">"+
-                                        "<img src=\""+iconSrc+"\" alt=\"User Avatar\">"+
-                                    "</span>"+
-                                    "<div class=\"chat-body clearfix\">"+
-                                        "<div class=\"header\">"+
-                                            "<strong class=\"primary-font\">"+val.subscriberNumber+"</strong>"+
-                                            "<small class=\"pull-right text-muted\">"+val.dateTime+"</small>"+
-                                        "</div>"+
-                                        "<p>"+val.message+"</p>"+
-                                    "</div>"+
-                                "</li>";
-                        
-                        $("#chatarea").append(chatelem)
-                    });                    
-                },  
-                error: function(){
-                    alert("failure");
-                }
-            });
-        }
-        
-        $(document).ready(loadSubsList());
-    </script>
-
 </head>
 
 <body id="page-top">
 
-    
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -221,16 +144,19 @@
 						
 						<!-- =============================================================== -->
 						<!-- member list -->
-						<ul id="subslist" class="friend-list">
+						<ul class="friend-list">
 							<li class="active bounceInDown">
-								<a href="#" class="clearfix">									
+								<a href="#" class="clearfix">
+									<img src="http://simpleicon.com/wp-content/uploads/mobile-1-256x256.png" alt="" class="img-circle">
 									<div class="friend-name">	
 										<strong>John Doe</strong>
 									</div>
-									<div class="last-message text-muted">Hello, Are you there?dfsa ad;fjasdlk;fjas fasdd;fl jasdf;lksdajf l;ksadjf sad;lkfj asd;lkj</div>									
+									<div class="last-message text-muted">Hello, Are you there?</div>
+									<small class="time text-muted">Just now</small>
+									<small class="chat-alert label label-danger">1</small>
 								</a>
 							</li>
-<!--							<li>
+							<li class="active">
 								<a href="#" class="clearfix">
 									<img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
 									<div class="friend-name">	
@@ -240,8 +166,73 @@
 									<small class="time text-muted">5 mins ago</small>
 								<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
 								</a>
-							</li> -->
-							                 
+							</li> 
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_3.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Kate</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">Yesterday</small>
+									<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
+								</a>
+							</li>  
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Kate</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">Yesterday</small>
+									<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
+								</a>
+							</li>     
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Kate</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">Yesterday</small>
+									<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
+								</a>
+							</li>        
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_6.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Kate</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">Yesterday</small>
+									<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
+								</a>
+							</li>          
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_5.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Kate</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">Yesterday</small>
+									<small class="chat-alert text-muted"><i class="fa fa-reply"></i></small>
+								</a>
+							</li>
+							<li>
+								<a href="#" class="clearfix">
+									<img src="https://bootdey.com/img/Content/user_2.jpg" alt="" class="img-circle">
+									<div class="friend-name">	
+										<strong>Jane Doe</strong>
+									</div>
+									<div class="last-message text-muted">Lorem ipsum dolor sit amet.</div>
+									<small class="time text-muted">5 mins ago</small>
+								<small class="chat-alert text-muted"><i class="fa fa-check"></i></small>
+								</a>
+							</li>                 
 						</ul>
 					</div>
 					
@@ -249,8 +240,106 @@
 					<!-- selected chat -->
 					<div class="col-md-8 bg-white ">
 						<div class="chat-message">
-							<ul id="chatarea" class="chat">								
-                                                        </ul>
+							<ul class="chat">
+								<li class="left clearfix">
+									<span class="chat-img pull-left">
+										<img src="http://simpleicon.com/wp-content/uploads/mobile-1-256x256.png" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">John Doe</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+										</p>
+									</div>
+								</li>
+								<li class="right clearfix">
+									<span class="chat-img pull-right">
+										<img src="https://img.icons8.com/wired/2x/headset.png" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">Sarah</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+										</p>
+									</div>
+								</li>
+								<li class="left clearfix">
+									<span class="chat-img pull-left">
+										<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">John Doe</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+										</p>
+									</div>
+								</li>
+								<li class="right clearfix">
+									<span class="chat-img pull-right">
+										<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">Sarah</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+										</p>
+									</div>
+								</li>                    
+								<li class="left clearfix">
+									<span class="chat-img pull-left">
+										<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">John Doe</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+										</p>
+									</div>
+								</li>
+								<li class="right clearfix">
+									<span class="chat-img pull-right">
+										<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">Sarah</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+										</p>
+									</div>
+								</li>
+								<li class="right clearfix">
+									<span class="chat-img pull-right">
+										<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
+									</span>
+									<div class="chat-body clearfix">
+										<div class="header">
+											<strong class="primary-font">Sarah</strong>
+											<small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+										</div>
+										<p>
+											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at. 
+										</p>
+									</div>
+								</li>                    
+							</ul>
 						</div>
 						<div class="chat-box bg-white">
 							<div class="input-group">
@@ -322,14 +411,7 @@
   <script src="js/sb-admin-2.min.js"></script>
   
   <!-- Custom Script for Chatroom -->
-    <script type="text/javascript">
-        $("#subslist").on("click","li",function(){
-            $(".subselem").removeClass("active");
-            $(this).addClass("active");
-            subscriberNumber = $(this).attr("name");
-            loadConv(subscriberNumber);
-        });
-    </script>
+  
 
 </body>
 
