@@ -38,7 +38,7 @@
                             console.log(data);
                             console.log(type);
                             console.log(row);
-                            return '<button class="far fa-edit" aria-hidden="true"></button>';
+                            return '<button class="far fa-edit" aria-hidden="true"  href="#" data-toggle="modal" data-target="#editModal"></button>';
                         }
                     },
                     { 
@@ -47,7 +47,7 @@
                             console.log(data);
                             console.log(type);
                             console.log(row);
-                            return '<button class="far fa-trash-alt" aria-hidden="true"></button>';
+                            return '<button class="far fa-trash-alt" aria-hidden="true" href="#" data-toggle="modal" data-target="#deleteModal"></button>';
                         }
                     }
                 ]
@@ -138,18 +138,6 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -269,7 +257,55 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a class="btn btn-primary" action = "logout.php">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Entry</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+			<div class="form-label-group">
+				<label for="inputNewKey">Key:</label></br>
+                <input name = "newKey" id="inputKey" class="form-control" placeholder="Enter new key value" required autofocus>
+              </div>
+			</br>
+			<div class="form-label-group">
+				<label for="inputNewMessage">Message:</label></br>
+                <input name = "newMessage" id="inputMessage" class="form-control" placeholder="Enter new message value" required autofocus>
+              </div>
+		</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Update</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Data?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Click Confirm if you want to <b>DELETE</b> this entry</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Confirm</a>
         </div>
       </div>
     </div>
