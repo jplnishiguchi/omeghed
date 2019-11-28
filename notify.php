@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$subscriberNumber = $senderAddress;
 	$sql = "INSERT INTO conversations (subscriberNumber, dateTime, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, multipartSeqNum, isMO) VALUES 
-	('$subscriberNumber','$dateTime', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$multipartSeqNum', '$isMO=')";
+	('$subscriberNumber','$dateTime', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$multipartSeqNum', '$isMO')";
 	
 	if (!mysqli_query($connection,$sql)){
 		//echo "Error description:".mysqli_error($connection);
