@@ -13,7 +13,7 @@ $sms = new Sms('0567', 'WqgqkvVu93th6x4UTThwrQJWOCalmrDihXSQBnvh2WQ');
 //$sms->setClientCorrelator('12345');
 //echo $sms->sendMessage();
 
-$sms->setReceiverAddress('9173186699');
+$sms->setReceiverAddress('9176880336');
 $sms->setMessage('ako ang iyong konsyensya awoooo');
 $sms->setClientCorrelator('12345');
 echo $sms->sendMessage();
