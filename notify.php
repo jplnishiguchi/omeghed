@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$multipartSeqNum = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['multipartSeqNum'];
 	$isMO=1;
 
-	//$subscriberNumber = substr($senderAddress,7);
-	$subscriberNumber = $senderAddress;
+	$subscriberNumber = substr($senderAddress,7);
+	//$subscriberNumber = $senderAddress;
 	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
 	
