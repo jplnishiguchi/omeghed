@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		//echo "Error description:".mysqli_error($connection);
 		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
 	}
-	
+	/*
 	if ($RESULTaccesstoken=mysqli_query($connection,$SQLaccesstoken)){
 		$ROWaccesstoken = mysqli_fetch_array($RESULTaccesstoken);
 		$accesstoken = $ROWaccesstoken['accessToken'];
