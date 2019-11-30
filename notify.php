@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dateTime = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['dateTime'];
         $destinationAddress = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['destinationAddress'];
         $messageId = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['messageId'];
-        $message = 		strtoupper($data['inboundSMSMessageList']['inboundSMSMessage'][0]['message']);
+        $message = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['message'];
         $resourceURL = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['resourceURL'];
         $senderAddress = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['senderAddress'];
 	$multipartRefId = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['multipartRefId'];
