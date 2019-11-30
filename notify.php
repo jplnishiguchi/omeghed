@@ -1,6 +1,8 @@
 <?php
 
 require('db_connect.php');
+require_once('include.php');
+use Globe\Connect\Sms;
 //$getfile='notify_get.txt';
 //$postfile='notify_post.txt';
 $errorlog = 'error_log.txt';
@@ -21,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// receive SMS
 	$json = file_get_contents('php://input');
 	$data = json_decode($json, true);
-
 	//file_put_contents($postfile, $date->getTimestamp() . PHP_EOL, FILE_APPEND);
 	//file_put_contents($postfile, "json:" . $json . PHP_EOL, FILE_APPEND);
 	//file_put_contents($postfile, "data:" . $data . PHP_EOL, FILE_APPEND);
@@ -32,21 +33,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dateTime = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['dateTime'];
         $destinationAddress = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['destinationAddress'];
         $messageId = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['messageId'];
-        $message = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['message'];
+        $message = 		strtoupper($data['inboundSMSMessageList']['inboundSMSMessage'][0]['message']);
         $resourceURL = 		$data['inboundSMSMessageList']['inboundSMSMessage'][0]['resourceURL'];
         $senderAddress = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['senderAddress'];
 	$multipartRefId = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['multipartRefId'];
 	$multipartSeqNum = 	$data['inboundSMSMessageList']['inboundSMSMessage'][0]['multipartSeqNum'];
 	$isMO=1;
 
+	//$subscriberNumber = substr($senderAddress,7);
 	$subscriberNumber = $senderAddress;
-	$sql = "INSERT INTO conversations (SUBSTR(subscriberNumber,7), destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
+	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
+	
+	$sqlkey = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
+	$accesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
 	
 	if (!mysqli_query($connection,$sql)){
 		//echo "Error description:".mysqli_error($connection);
 		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
 	}
+	
+	if (mysqli_query($connection,$sqlkey)){
+		if (mysqli_query($connection,$accesstoken)){
+			$sms = new Sms('0567', $accesstoken);
+			$sms->setReceiverAddress($subscriberNumber);
+			$sms->setMessage($sqlkey);
+			$sms->setClientCorrelator('12345');
+			$sms->sendMessage();
+			}
+		}
+	
+	
 		
 	/*file_put_contents($postfile, $dateTime . PHP_EOL, FILE_APPEND);
 	file_put_contents($postfile, $destinationAddress . PHP_EOL, FILE_APPEND);
