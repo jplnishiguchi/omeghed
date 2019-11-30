@@ -28,5 +28,4 @@ require_once (__DIR__ . './Globe/Connect/Voice/StartRecording.php');
 require_once (__DIR__ . './Globe/Connect/Voice/Transfer.php');
 require_once (__DIR__ . './Globe/Connect/Voice/Transcription.php');
 require_once (__DIR__ . './Globe/Connect/Voice/Wait.php');
-
 ?>
