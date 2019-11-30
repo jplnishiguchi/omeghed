@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
 	
-	$sqlkey = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
+	$message = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
 	$accesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
 	
 	if (!mysqli_query($connection,$sql)){
@@ -53,11 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
 	}
 	
-	if (mysqli_query($connection,$sqlkey)){
+	if (mysqli_query($connection,$message)){
 		if (mysqli_query($connection,$accesstoken)){
 			$sms = new Sms('0567', $accesstoken);
 			$sms->setReceiverAddress($subscriberNumber);
-			$sms->setMessage($sqlkey);
+			$sms->setMessage($message);
 			$sms->setClientCorrelator('12345');
 			$sms->sendMessage();
 			}
