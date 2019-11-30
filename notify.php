@@ -1,8 +1,8 @@
 <?php
 
 require('db_connect.php');
-//require_once('include.php');
-//use Globe\Connect\Sms;
+require_once('include.php');
+use Globe\Connect\Sms;
 //$getfile='notify_get.txt';
 //$postfile='notify_post.txt';
 $errorlog = 'error_log.txt';
