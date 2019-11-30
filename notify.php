@@ -45,23 +45,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
 	
-	$message = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
-	$accesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
+	$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
+	$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
 	
 	if (!mysqli_query($connection,$sql)){
 		//echo "Error description:".mysqli_error($connection);
 		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
 	}
 	
-	if (mysqli_query($connection,$message)){
-		if (mysqli_query($connection,$accesstoken)){
-			$sms = new Sms('0567', $accesstoken);
-			$sms->setReceiverAddress($subscriberNumber);
-			$sms->setMessage($message);
-			$sms->setClientCorrelator('12345');
-			$sms->sendMessage();
+	if ($RESULTaccesstoken=mysqli_query($connection,$SQLaccesstoken)){
+		$ROWaccesstoken = mysqli_fetch_array($RESULTaccesstoken);
+		$accesstoken = $ROWaccesstoken['accessToken'];
+		
+		if ($RESULTmessage=mysqli_query($connection,$SQLmessage)){	
+			if(mysqli_num_rows($RESULTmessage) > 0){
+				$ROWmessage = mysqli_fetch_array($RESULTmessage);
+				$message = $ROWmessage['message'];
+	
+				$sms = new Sms('0567', $accesstoken);
+				$sms->setReceiverAddress($subscriberNumber);
+				$sms->setMessage($message);
+				$sms->setClientCorrelator('12345');
+				$sms->sendMessage();
 			}
 		}
+	}
 	
 	
 		
