@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$sms->sendMessage();
 				
 				$webapp = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
-				('$subscriberNumber', '$senderAddress'', '$messageId', '$message', '$resourceURL', '$destinationAddress', '$multipartRefId', 0)";
+				('$subscriberNumber', '$senderAddress', '$messageId', '$message', '$resourceURL', '$destinationAddress', '$multipartRefId', 0)";
 				mysqli_query($connection,$webapp);
 			}
 		}
