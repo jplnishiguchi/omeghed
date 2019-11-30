@@ -45,14 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
 	
-	//$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
-	//$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
+	$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
+	$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
 	
 	if (!mysqli_query($connection,$sql)){
 		//echo "Error description:".mysqli_error($connection);
 		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
 	}
-	/*
+	
 	if ($RESULTaccesstoken=mysqli_query($connection,$SQLaccesstoken)){
 		$ROWaccesstoken = mysqli_fetch_array($RESULTaccesstoken);
 		$accesstoken = $ROWaccesstoken['accessToken'];
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$sms->sendMessage();
 			}
 		}
-	}*/
+	}
 	
 	
 		
