@@ -1,8 +1,8 @@
 <?php
 
 require('db_connect.php');
-require_once('include.php');
-use Globe\Connect\Sms;
+//require_once('include.php');
+//use Globe\Connect\Sms;
 //$getfile='notify_get.txt';
 //$postfile='notify_post.txt';
 $errorlog = 'error_log.txt';
@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$sql = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
 	('$subscriberNumber', '$destinationAddress', '$messageId', '$message', '$resourceURL', '$senderAddress', '$multipartRefId', '$isMO')";
 	
-	$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
-	$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
+	//$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
+	//$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
 	
 	if (!mysqli_query($connection,$sql)){
 		//echo "Error description:".mysqli_error($connection);
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$sms->sendMessage();
 			}
 		}
-	}
+	}*/
 	
 	
 		
