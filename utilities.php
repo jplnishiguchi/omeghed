@@ -1,4 +1,6 @@
 <?php
+use Globe\Connect\Sms;
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -200,6 +202,25 @@ function addToConv($subscriberNumber, $message){
     }
 }
 
+function sendToMobile($subscriberNumber, $message){
+    
+    $sql = "SELECT accessToken FROM opt_in WHERE subscriberNumber=?";    
+    
+    $conn = initializeDb();    
+    $stmt = $conn->prepare($sql);    
+    $stmt->bind_param("s",$subscriberNumber);
+    $stmt->execute();
+    $ret = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    
+    $accesstoken = $ret['0']['accessToken'];
+    $sms = new Sms('0567', $accesstoken);
+    $sms->setReceiverAddress($subscriberNumber);
+    $sms->setMessage($message);
+    $sms->setClientCorrelator('12345');
+    $sms->sendMessage();
+
+}
+
 /* 
  * RETRIEVE RECORDS
  * 
@@ -304,7 +325,8 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             case "conv":
                 try{
-                returnJson(addToConv($id, $_POST['message']));
+                    sendToMobile($id, $_POST['message']);
+                    returnJson(addToConv($id, $_POST['message']));
                 } catch (Exception $ex) {
                     return array(
                         "success"=>false,
