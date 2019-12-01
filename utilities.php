@@ -1,4 +1,5 @@
 <?php
+require_once('include.php');
 use Globe\Connect\Sms;
 
 ini_set('display_errors', 1);
