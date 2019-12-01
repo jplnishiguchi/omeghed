@@ -277,6 +277,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entity = isset($_POST['entity']) ? $_POST['entity'] : NULL;
     $id = isset($_POST['id']) ? $_POST['id'] : NULL;
+    $message = isset($_POST['message']) ? trim($_POST['message']) : NULL;
+    $newKey = isset($_POST['newKey']) ? trim($_POST['newKey']) : NULL;
    
     if(empty($entity)){
         returnJson(array(
@@ -304,15 +306,23 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ));
         }
         // Check if message is provided
-        else if(!isset($_POST['message'])){
+        else if(empty($message)){
             returnJson(array(
                 "success"=>false,
                 "data"=>"No provided message",
             ));
         }                
         
-        $message = isset($_POST['message']) ? $_POST['message'] : NULL;
-        $newKey = isset($_POST['newKey']) ? $_POST['newKey'] : NULL;
+        
+        
+        // This means user is trying to add an existing keyword.
+        if($newKey==NULL){
+            returnJson(array(
+                "success"=>false,
+                "data"=>"Keyword already exists",
+            ));
+        }
+        
         returnJson(updateDict($id, $message, $newKey));
     }
     // Else, if record does not exist, it's a create request
@@ -328,19 +338,19 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         switch($entity){
             case "dict":
-                if(!isset($_POST['message'])){
+                if(empty($message)){
                     returnJson(array(
                         "success"=>false,
                         "data"=>"No provided message",
                     ));
                 }
                 
-                returnJson(addToDict($id, $_POST['message']));
+                returnJson(addToDict($id, $message));
                 break;
             case "conv":
                 try{
-                    sendToMobile($id, $_POST['message']);
-                    returnJson(addToConv($id, $_POST['message']));
+                    sendToMobile($id, $message);
+                    returnJson(addToConv($id, $message));
                 } catch (Exception $ex) {
                     return array(
                         "success"=>false,
