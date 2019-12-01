@@ -47,49 +47,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	$SQLmessage = "SELECT message FROM dictionary WHERE keyword LIKE '$message%'";
 	$SQLaccesstoken = "SELECT accessToken FROM opt_in WHERE subscriberNumber = '$subscriberNumber'";
-	$SQLmultipartmessage = "SELECT message FROM conversations WHERE multipartRefId is not NULL and trim(multipartRefId) not like '' and multipartRefId like '$multipartRefId'";
-		
+	
+	if (!mysqli_query($connection,$sql)){
+		//echo "Error description:".mysqli_error($connection);
+		file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
+	}
+	
 	if ($RESULTaccesstoken=mysqli_query($connection,$SQLaccesstoken)){
 		$ROWaccesstoken = mysqli_fetch_array($RESULTaccesstoken);
 		$accesstoken = $ROWaccesstoken['accessToken'];
 		
-		if ($RESULTmultipartmessage=mysqli_query($connection,$SQLmultipartmessage)){
-			if(mysqli_num_rows($RESULTmultipartmessage) > 0){
-				// retrieve message in conversation table
-				$ROWmessageinDB = mysqli_fetch_array($RESULTmultipartmessage);
-				$messageinDB = $ROWmessageinDB[0];
-				// part of multipartmessage
-				// update message entry
-				$newmessage = $messageinDB . $message;
-				$updatemessage = "UPDATE conversations SET message='$messageinDB' WHERE multipartRefId='$multipartRefId'";
-				mysqli_query($connection,$updatemessage);
-			} else {
-				// first part of message or only 1 message
-				// save message in DB
-				if (!mysqli_query($connection,$sql)){
-					//echo "Error description:".mysqli_error($connection);
-					file_put_contents($errorlog, mysqli_error($connection) . PHP_EOL, FILE_APPEND);
-				}
-								
-				// find in dictionary
-				if ($RESULTmessage=mysqli_query($connection,$SQLmessage)){	
-					if(mysqli_num_rows($RESULTmessage) > 0){
-						$ROWmessage = mysqli_fetch_array($RESULTmessage);
-						$message = $ROWmessage['message'];
-
-						$sms = new Sms('0567', $accesstoken);
-						$sms->setReceiverAddress($subscriberNumber);
-						$sms->setMessage($message);
-						$sms->setClientCorrelator('12345');
-						$sms->sendMessage();
-
-						$webapp = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
-						('$subscriberNumber', '$senderAddress', '$messageId', '$message', '$resourceURL', '$destinationAddress', '$multipartRefId', 0)";
-						mysqli_query($connection,$webapp);
-					}
-				}
+		if ($RESULTmessage=mysqli_query($connection,$SQLmessage)){	
+			if(mysqli_num_rows($RESULTmessage) > 0){
+				$ROWmessage = mysqli_fetch_array($RESULTmessage);
+				$message = $ROWmessage['message'];
+	
+				$sms = new Sms('0567', $accesstoken);
+				$sms->setReceiverAddress($subscriberNumber);
+				$sms->setMessage($message);
+				$sms->setClientCorrelator('12345');
+				$sms->sendMessage();
+				
+				$webapp = "INSERT INTO conversations (subscriberNumber, destinationAddress, messageId, message, resourceURL, senderAddress, multipartRefId, isMO) VALUES 
+				('$subscriberNumber', '$senderAddress', '$messageId', '$message', '$resourceURL', '$destinationAddress', '$multipartRefId', 0)";
+				mysqli_query($connection,$webapp);
 			}
-		}		
+		}
 	}
 	
 	
