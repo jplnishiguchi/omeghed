@@ -56,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if ($RESULTmultipartmessage=mysqli_query($connection,$SQLmultipartmessage)){
 			if(mysqli_num_rows($RESULTmultipartmessage) > 0){
 				// retrieve message in conversation table
-				$ROWmessage = mysqli_fetch_array($RESULTmultipartmessage);
-				$messageinDB = $ROWmessage['message'];
+				$ROWmessageinDB = mysqli_fetch_array($RESULTmultipartmessage);
+				$messageinDB = $ROWmessageinDB[0];
 				// part of multipartmessage
 				// update message entry
 				$newmessage = $messageinDB . $message;
