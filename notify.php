@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				// part of multipartmessage
 				// update message entry
 				$newmessage = $messageinDB . $message;
-				$updatemessage = "UPDATE conversations SET message='$newmessage' WHERE multipartRefId='$multipartRefId'";
+				$updatemessage = "UPDATE conversations SET message='$messageinDB' WHERE multipartRefId='$multipartRefId'";
 				mysqli_query($connection,$updatemessage);
 			} else {
 				// first part of message or only 1 message
