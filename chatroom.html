@@ -223,10 +223,10 @@
 		<!-- CHATROOM START -->
 			
 			<div class="container bootstrap snippet">
-				<div class="row" id ="chatdiv" >
-					<div class="col-md-4 bg-white " id = "selectsub">
+				<div class="row">
+					<div class="col-md-4 bg-white ">
 						<div class=" row border-bottom padding-sm" style="height: 40px;" id = "sample">
-							Subscribers List
+							Member
 						</div>
 						
 						<!-- =============================================================== -->
@@ -258,7 +258,7 @@
 					<!--=========================================================-->
 					<!-- selected chat -->
 					<div class="col-md-8 bg-white ">
-						<div class="chat-message" id = "selectchat">
+						<div class="chat-message">
 							<ul id="chatarea" class="chat">								
                                                         </ul>
 						</div>
@@ -358,11 +358,18 @@
 	 }, 5000);  //Delay here = 5 seconds 
 	});
 	
+	 $(document).ready(
+	 function() {
+	 setInterval(function() {
+	  $('.col-md-4 bg-white');
+	 }, 5000);  //Delay here = 5 seconds 
+	});
+
 
 	 $(document).ready(
 	 function() {
 	 setInterval(function() {
-	  $('#chatdiv').load('chatroom.html');;
+	  $('.col-md-8 bg-white ');
 	 }, 3000);  //Delay here = 3 seconds 
 	});
 	</script>
