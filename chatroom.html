@@ -226,7 +226,7 @@
 				<div class="row" id ="chatdiv" >
 					<div class="col-md-4 bg-white " id = "selectsub">
 						<div class=" row border-bottom padding-sm" style="height: 40px;" id = "sample">
-							Member
+							Subscribers List
 						</div>
 						
 						<!-- =============================================================== -->
@@ -358,18 +358,11 @@
 	 }, 5000);  //Delay here = 5 seconds 
 	});
 	
-	 $(document).ready(
-	 function() {
-	 setInterval(function() {
-	  $('#selectsub');
-	 }, 5000);  //Delay here = 5 seconds 
-	});
-
 
 	 $(document).ready(
 	 function() {
 	 setInterval(function() {
-	  $('#chatdiv').load('chatroom.php');;
+	  $('#chatdiv').load('chatroom.html');;
 	 }, 3000);  //Delay here = 3 seconds 
 	});
 	</script>
