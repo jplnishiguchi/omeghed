@@ -224,7 +224,7 @@
 			
 			<div class="container bootstrap snippet">
 				<div class="row">
-					<div class="col-md-4 bg-white ">
+					<div class="col-md-4 bg-white " id = "selectsub">
 						<div class=" row border-bottom padding-sm" style="height: 40px;" id = "sample">
 							Member
 						</div>
@@ -258,7 +258,7 @@
 					<!--=========================================================-->
 					<!-- selected chat -->
 					<div class="col-md-8 bg-white ">
-						<div class="chat-message">
+						<div class="chat-message" id = "selectchat">
 							<ul id="chatarea" class="chat">								
                                                         </ul>
 						</div>
@@ -361,7 +361,7 @@
 	 $(document).ready(
 	 function() {
 	 setInterval(function() {
-	  $('#subslist');
+	  $('#selectsub');
 	 }, 5000);  //Delay here = 5 seconds 
 	});
 
@@ -369,7 +369,7 @@
 	 $(document).ready(
 	 function() {
 	 setInterval(function() {
-	  $('#chatarea');
+	  $('#selectchat');
 	 }, 3000);  //Delay here = 3 seconds 
 	});
 	</script>
