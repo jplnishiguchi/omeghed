@@ -123,9 +123,19 @@ function getEntity($entity, $id){
     }
 }
 
-function updateDict($keyword, $message){   
+function updateDict($keyword, $message, $newKey){   
+    
+    $keyword = trim($keyword);
+    $newKey = trim($newKey);
     // Build SQL statement
-    $sql = "UPDATE dictionary SET message='".$message."' WHERE keyword = ?";
+    // Default: keyword stays the same    
+    if($keyword==$newKey){
+        $sql = "UPDATE dictionary SET message='".$message."' WHERE keyword = ?";
+    }
+    // Else, update keyword as well
+    else{
+        $sql = "UPDATE dictionary SET keyword='".$newKey."', message='".$message."' WHERE keyword = ?";
+    }
     
     try{
         // Initialize DB
@@ -148,6 +158,9 @@ function updateDict($keyword, $message){
 }
 
 function addToDict($keyword, $message){   
+    
+    $keyword = trim($keyword);
+    
     // Build SQL statement
     $sql = "INSERT INTO dictionary VALUES (?,?)";
     
@@ -285,7 +298,6 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Check if update is for dictionary
         if(!in_array($entity, array("dict"))){
-            die("andito");
             returnJson(array(
                 "success"=>false,
                 "data"=>"Not allowed for entity: ".$entity,
@@ -300,7 +312,8 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }                
         
         $message = isset($_POST['message']) ? $_POST['message'] : NULL;
-        returnJson(updateDict($id, $message));
+        $newKey = isset($_POST['newKey']) ? $_POST['newKey'] : NULL;
+        returnJson(updateDict($id, $message, $newKey));
     }
     // Else, if record does not exist, it's a create request
     // Create requests are only allowed for dictionary and conversations entities
@@ -336,5 +349,45 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 break;
         }
+    }
+}
+
+// Delete dictionary entry
+else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $entity = isset($_GET['entity']) ? $_GET['entity'] : NULL;
+    $id = isset($_GET['id']) ? $_GET['id'] : NULL;
+    
+    if(empty($entity) || empty($id)){
+        returnJson(array(
+            "success"=>false,
+            "data"=>"No entity or ID provided",
+        ));
+    }
+    else if(!in_array($entity, array("dict"))){
+        returnJson(array(
+            "success"=>false,
+            "data"=>"Not allowed for entity: ".$entity
+        ));
+    }
+    
+     $sql = "DELETE FROM dictionary WHERE keyword=?";
+    
+    try{
+        // Initialize DB
+        $conn = initializeDb();    
+        $stmt = $conn->prepare($sql);    
+        $stmt->bind_param("s",$id);
+        $stmt->execute();        
+        
+        returnJson(array(
+            "success"=> true,
+            "data"=>"Delete successful",
+        ));
+    } catch (Exception $ex) {
+        returnJson(array(
+            "success"=>false,
+            "data"=>"Error on update: ".str($ex),
+        ));
+        
     }
 }

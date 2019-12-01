@@ -26,7 +26,7 @@
 
   
     <script type="text/javascript">
-        $(document).ready(function() {
+        function loadDictTable(){
             $('#dataTable').DataTable( {
                 "ajaxSource": '/utilities.php?entity=dict',
                 "columns": [
@@ -38,7 +38,7 @@
                             console.log(data);
                             console.log(type);
                             console.log(row);
-                            return '<button class="far fa-edit" aria-hidden="true"  href="#" data-toggle="modal" data-target="#editModal"></button>';
+                            return '<button class="far fa-edit" aria-hidden="true"  href="#" data-toggle="modal" data-target="#editModal" onclick="editRow(\''+row.keyword+'\',\''+row.message+'\')"></button>';
                         }
                     },
                     { 
@@ -47,12 +47,66 @@
                             console.log(data);
                             console.log(type);
                             console.log(row);
-                            return '<button class="far fa-trash-alt" aria-hidden="true" href="#" data-toggle="modal" data-target="#deleteModal"></button>';
+                            return '<button class="far fa-trash-alt" aria-hidden="true" href="#" data-toggle="modal" data-target="#deleteModal" onclick="deleteRow(\''+row.keyword+'\')"></button>';
                         }
                     }
                 ]
             } );
+        }
+        $(document).ready(function() {
+            loadDictTable();
         } );
+        
+        function editRow(oldKeyword,message){
+           console.log(oldKeyword);
+           $("#editModal").attr("name", oldKeyword);           
+           $("#inputKey").val(oldKeyword);
+           $("#inputMessage").val(message);
+        }
+        
+        function deleteRow(keyword){           
+           $("#deleteModal").attr("name", keyword);                      
+        }
+        
+        function updateDict(){
+            oldkey = $("#editModal").attr("name");
+            newkey = $("#inputKey").val();
+            message = $("#inputMessage").val();
+            $.ajax({
+                type: "POST",
+                url: "/utilities.php",
+                data:{
+                    entity:"dict",
+                    id:oldkey,
+                    newKey:newkey,
+                    message:message
+                },
+                success: function(msg){
+                    location.reload()
+                },  
+                error: function(){
+                    alert("failure");
+                }
+            });
+        }
+        
+        function deleteDict(){
+            keyword = $("#deleteModal").attr("name");            
+            $.ajax({
+                type: "DELETE",
+                url: "/utilities.php?entity=dict&id="+keyword,
+//                data:{
+//                    entity:"dict",
+//                    id:keyword                    
+//                },
+                success: function(msg){
+                    location.reload()
+                },  
+                error: function(){
+                    alert("failure");
+                }
+            });
+        }
     </script>
 
 </head>
@@ -286,7 +340,7 @@
 		</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="#">Update</a>
+          <a class="btn btn-primary" href="#" onclick="updateDict()">Update</a>
         </div>
       </div>
     </div>
@@ -305,7 +359,7 @@
         <div class="modal-body">Click Confirm if you want to <b>DELETE</b> this entry</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="#">Confirm</a>
+          <a class="btn btn-primary" href="#" onclick="deleteDict()">Confirm</a>
         </div>
       </div>
     </div>
@@ -341,8 +395,7 @@
                     alert("failure");
                 }
                });
-         });
-       
+         });              
   </script>
 
 </body>
